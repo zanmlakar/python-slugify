@@ -171,6 +171,20 @@ class ReleaseRegressionTests(unittest.TestCase):
         self.assertEqual(slugify(text, entities=False, decimal=True, hexadecimal=False), 'beta-a-x42')
         self.assertEqual(slugify(text, entities=False, decimal=False, hexadecimal=True), 'beta-65-b')
 
+    def test_numeric_entities_require_ascii_digits(self):
+        cases = (
+            ('&#١٢٣;', '١٢٣'),
+            ('&#6٦;', '6٦'),
+            ('&#１２３;', '123'),
+            ('&#x٤١;', 'x٤١'),
+            ('&#X4١;', 'x4١'),
+            ('&#x４１;', 'x41'),
+        )
+        for reference, expected in cases:
+            with self.subTest(reference=reference):
+                self.assertEqual(slugify('&#65; ' + reference + ' &#x42;', allow_unicode=True),
+                                 'a-' + expected + '-b')
+
     def test_normalization_ordinals_dashes_and_phonetic_quotes(self):
         self.assertEqual(slugify('1º 1ª 𝐚́́𝕒́'), '1o-1a-aa')
         self.assertEqual(slugify('a‐b‑c‒d–e—f'), 'a-b-c-d-e-f')

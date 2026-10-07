@@ -13,8 +13,8 @@ __all__ = ['slugify', 'smart_truncate', 'Backend', 'ReplacementStage', 'Algorith
 
 
 CHAR_ENTITY_PATTERN = re.compile(r'&(%s);' % '|'.join(name2codepoint))
-DECIMAL_PATTERN = re.compile(r'&#(\d+);')
-MODERN_HEX_PATTERN = re.compile(r'&#[xX]([\da-fA-F]+);')
+DECIMAL_PATTERN = re.compile(r'&#([0-9]+);')
+MODERN_HEX_PATTERN = re.compile(r'&#[xX]([0-9a-fA-F]+);')
 QUOTE_PATTERN = re.compile(r"[']+")
 DISALLOWED_CHARS_PATTERN = re.compile(r'[^-a-zA-Z0-9]+')
 DISALLOWED_UNICODE_CHARS_PATTERN = re.compile(r'[\W_]+')
